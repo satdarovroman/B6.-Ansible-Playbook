@@ -1,0 +1,28 @@
+---
+# tasks file for dnsmasq
+
+
+  - name: Install dnsmasq server
+    yum:
+      name: dnsmasq
+      state: installed
+      update_cache: yes
+
+  - name: create cache
+    file:
+     path: /etc/dnsmasq.d/cache
+     state: touch
+
+
+  - name: add lines
+    lineinfile: 
+      path: /etc/dnsmasq.d/cache
+      line: '{{ item }}'
+    with_items:
+      - 'cache-size=10000'  
+      - 'all-servers'  
+
+  - name: Service restart
+    service:
+      name: dnsmasq
+      state: restarted
