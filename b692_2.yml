@@ -1,0 +1,56 @@
+---
+- hosts: localhost
+  gather_facts: true
+  vars:
+    password: test123
+  
+  tasks:
+    - name: add group superuser
+      group:
+        name: superusers
+        state: present
+    
+    - name: add user2
+      user:
+        name: user2
+        password: "{{password}}"
+        shell: /bin/bash
+        group: superusers
+    
+    - name: add user3
+      user:
+        name: user3
+        password: "{{password}}"
+        shell: /bin/bash
+        group: superusers
+    
+    - name: create ssh-key user2
+      user:
+        name: user2
+        generate_ssh_key: yes
+        ssh_key_file: .ssh/id_rsa
+    
+    - name: install authorized key user2
+      authorized_key:
+        user: user2
+        state: present
+        key: "{{ lookup('file', '/home/user2/.ssh/id_rsa.pub') }}"
+    
+    - name: create ssh-key user3
+      user:
+        name: user1
+        generate_ssh_key: yes
+        ssh_key_file: .ssh/id_rsa
+    
+    - name: install authorized key user3
+      authorized_key:
+        user: user2
+        state: present
+        key: "{{ lookup('file', '/home/user1/.ssh/id_rsa.pub') }}"
+    
+    - name: validate sudoers
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^%admin ALL='
+        line: '%superusers ALL=(ALL) ALL'
