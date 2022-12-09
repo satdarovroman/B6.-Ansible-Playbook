@@ -1,0 +1,17 @@
+---
+- hosts: test
+  gather_facts: yes
+  remote_user: root
+
+  tasks:
+    - name: Install postfix
+      yum:
+        name: postfix
+        state: installed
+      tags: init postfix
+
+    - name: Uninstall postfix
+      yum:
+        name: postfix
+        state: absent
+      tags: drop postfix
