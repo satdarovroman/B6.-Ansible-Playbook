@@ -1,0 +1,40 @@
+---
+# tasks file for vsftpd
+
+
+- name: install package
+  yum:
+    name: vsftpd
+    state: installed
+
+- name: anonymous_enable=NO
+  lineinfile:
+    path: /etc/vsftpd/vsftpd.conf
+    regexp: '^anonymous_enable'
+    line: 'anonymous_enable=NO'
+    
+
+- name: local_enable=YES
+  lineinfile:
+    path: /etc/vsftpd/vsftpd.conf
+    regexp: '^local_enable'
+    line: 'local_enable=YES'
+    
+- name: write_enable=YES
+  lineinfile:
+    path:  /etc/vsftpd/vsftpd.conf
+    regexp: '^write_enable'
+    line: 'write_enable=YES'
+    
+- name: chroot_local_user=YES
+  lineinfile:
+    path: /etc/vsftpd/vsftpd.conf
+    regexp: '^chroot_local_user'
+    line: 'chroot_local_user=YES'
+    
+- name: start service
+  service:
+    name: vsftpd
+    state: started
+    enabled: yes
+
