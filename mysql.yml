@@ -10,9 +10,9 @@
     - name: "Installing MySQL 5.7"
       package: name=mysql-community-server state=present
     - name: Start the MySQL service
-      become: true
+      become: yes
       service: 
         name: mysqld
         state: started
-        enabled: true
+        enabled: yes
 
