@@ -1,0 +1,33 @@
+---
+- name: install nginx
+  yum:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: install php-fpm
+  yum:
+    name: php-fpm
+    state: present
+    update_cache: yes
+
+
+- name: update fpm 
+  ansible.builtin.lineinfile:
+          dest: /etc/php-fpm.d/www.conf
+          regexp: "^listen ="
+          line: "listen = {{ tcp_socket | default(unix_socket) }}"
+ 
+
+- name: website files 
+  copy:
+    src: files/index.php
+    dest: "{{ nginx_document_root }}"
+    mode: preserve
+
+- name: apply nginx template
+  template:
+    src: templates/nginx.conf.j2
+    dest: /etc/nginx/conf.d/nginx.conf
+
+

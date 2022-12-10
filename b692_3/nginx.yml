@@ -1,0 +1,15 @@
+---
+
+- hosts: test
+  gather_facts: yes
+  vars: 
+    nginx_document_root: "/var/www/html/"    
+    nginx_index: "index.php"
+    nginx_port: "80"
+    unix_socket: "/run/php/php{{ php_version }}-fpm.sock"
+    php_version: "7"
+
+  become: yes
+  roles:
+   - nginx
+
