@@ -1,0 +1,18 @@
+---
+# tasks file for php
+- name: install php-fpm
+  yum:
+    name: php-fpm
+    state: present
+    update_cache: yes
+
+- name: fpm config
+  ansible.builtin.lineinfile:
+    dest: /etc/php/{{ php_version }}/fpm/pool.d/www.conf
+    regexp: "^listen ="
+    line: "listen = 9000"
+
+- name: start php-fpm
+  ansible.builtin.service:
+    name: "php-fpm"
+    state: started

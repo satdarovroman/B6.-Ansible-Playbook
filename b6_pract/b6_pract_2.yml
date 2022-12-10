@@ -1,0 +1,14 @@
+---
+- hosts: server1
+  gather_facts: yes
+  ignore_errors: True  
+  roles:
+    - users
+    - nginx_2
+
+- hosts: server2
+  gather_facts: yes
+  ignore_errors: True
+  roles:
+    - users
+    - php

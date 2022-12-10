@@ -1,0 +1,8 @@
+---
+- hosts: test
+  gather_facts: yes
+  ignore_errors: True
+  roles:
+    - users
+    - nginx_2
+    - php

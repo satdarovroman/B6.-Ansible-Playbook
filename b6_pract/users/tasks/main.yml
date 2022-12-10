@@ -1,0 +1,20 @@
+---
+# tasks file for users
+- name: create user
+  user:
+    name: user
+    password: "{{password}}"
+    shell: /bin/bash
+    group: superusers
+
+- name: create ssh-key
+  user:
+    name: user
+    generate_ssh_key: yes
+    ssh_key_file: .ssh/id_rsa
+
+- name: install authorized key
+  authorized_key:
+    user: user
+    state: present
+    key: "{{ lookup('file', '/home/user/.ssh/id_rsa.pub') }}"
